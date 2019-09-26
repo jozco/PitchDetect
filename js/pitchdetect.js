@@ -22,58 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-function toOutput(base) {
-  //var base = document.getElementById('base').value;
-  var res = Logic(base);
-  var output = res[0]+" A4="+res[1]+" Hz";
-  if (res === "") output="Not a number<br />";
-  if (res === 0)  output="Enter number > 0<br />";
-  return output;
-}
-
-function toA(input) {
-    number = input%12;
-    times = Math.floor(-input/12)+5;
-
-    if(number === 0) { note = "A"; times--; }
-    if(number == 11 || number == -1) { note = "A#"; times--; }
-    if(number == 10 || number == -2) { note = "B"; times--; }
-    if(number == 9 || number == -3) note = "C";
-    if(number == 8 || number == -4) note = "C#";
-    if(number == 7 || number == -5) note = "D";
-    if(number == 6 || number == -6) note = "D#";
-    if(number == 5 || number == -7) note = "E";
-    if(number == 4 || number == -8) note = "F";
-    if(number == 3 || number == -9) note = "F#";
-    if(number == 2 || number == -10) note = "G";
-    if(number == 1 || number == -11) note = "G#";
-
-    return note+times;
-}
-
-function Logic(base) {
-    var note = 0;
-    if (isNaN(base) || base === "")
-      return "";//"Not a number<br />";
-    if (base<=0) 
-      return 0;//"Enter number > 0<br />";
-
-    var step = Math.pow(2, 1/12);
-
-    while (base>=427.31) {
-        base=base/step; note--; 
-    }
-
-    do {
-        if(base>=427.31) {
-          return [toA(note), Math.round(base*100)/100];
-        }
-        base=base*step; note++; 
-    } while (base<=452.71)
-
-    return ;
-}
-
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 var audioContext = null;
@@ -365,6 +313,58 @@ function autoCorrelate( buf, sampleRate ) {
 	}
 	return -1;
 //	var best_frequency = sampleRate/best_offset;
+}
+
+function toA(input) {
+    number = input%12;
+    times = Math.floor(-input/12)+5;
+
+    if(number === 0) { note = "A"; times--; }
+    if(number == 11 || number == -1) { note = "A#"; times--; }
+    if(number == 10 || number == -2) { note = "B"; times--; }
+    if(number == 9 || number == -3) note = "C";
+    if(number == 8 || number == -4) note = "C#";
+    if(number == 7 || number == -5) note = "D";
+    if(number == 6 || number == -6) note = "D#";
+    if(number == 5 || number == -7) note = "E";
+    if(number == 4 || number == -8) note = "F";
+    if(number == 3 || number == -9) note = "F#";
+    if(number == 2 || number == -10) note = "G";
+    if(number == 1 || number == -11) note = "G#";
+
+    return note+times;
+}
+
+function Logic(base) {
+    var note = 0;
+    if (isNaN(base) || base === "")
+      return "";//"Not a number<br />";
+    if (base<=0) 
+      return 0;//"Enter number > 0<br />";
+
+    var step = Math.pow(2, 1/12);
+
+    while (base>=427.31) {
+        base=base/step; note--; 
+    }
+
+    do {
+        if(base>=427.31) {
+          return [toA(note), Math.round(base*100)/100];
+        }
+        base=base*step; note++; 
+    } while (base<=452.71)
+
+    return ;
+}
+
+function toOutput(base) {
+  //var base = document.getElementById('base').value;
+  var res = Logic(base);
+  var output = res[0]+" A4="+res[1]+" Hz";
+  if (res === "") output="Not a number<br />";
+  if (res === 0)  output="Enter number > 0<br />";
+  return output;
 }
 
 function updatePitch( time ) {
